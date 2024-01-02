@@ -2,6 +2,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
 # Establecer la imagen para compilar la aplicación
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -18,6 +19,7 @@ RUN dotnet build -c Release -o /app/build
 
 # Instalar herramienta EF y agregar paquete Microsoft.EntityFrameworkCore.Design
 RUN dotnet tool install --global dotnet-ef
+ENV PATH="${PATH}:/root/.dotnet/tools"
 RUN dotnet add package Microsoft.EntityFrameworkCore.Design
 
 # Generar las migraciones y actualizar la base de datos
