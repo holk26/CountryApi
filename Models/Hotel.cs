@@ -2,15 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
-// CountryApi/Models/Hotel.cs
 namespace CountryApi.Models
 {
     public class Hotel
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty; 
+        public string Name { get; set; } = string.Empty;
+        public int Starts { get; set; }
         public int CountryId { get; set; }
-        public Country Country { get; set; } = new Country();
+
+        [JsonIgnore]
+        public Country Country { get; set; }
     }
 }

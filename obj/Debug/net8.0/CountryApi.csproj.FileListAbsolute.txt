@@ -1,5 +1,6 @@
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/bin/Debug/net8.0/appsettings.Development.json
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/bin/Debug/net8.0/appsettings.json
+/home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/bin/Debug/net8.0/global.json
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/bin/Debug/net8.0/CountryApi
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/bin/Debug/net8.0/CountryApi.deps.json
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/bin/Debug/net8.0/CountryApi.runtimeconfig.json
@@ -112,6 +113,7 @@
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/obj/Debug/net8.0/CountryApi.csproj.CoreCompileInputs.cache
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/obj/Debug/net8.0/CountryApi.MvcApplicationPartsAssemblyInfo.cs
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/obj/Debug/net8.0/CountryApi.MvcApplicationPartsAssemblyInfo.cache
+/home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/obj/Debug/net8.0/CountryApi.sourcelink.json
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/obj/Debug/net8.0/staticwebassets.build.json
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/obj/Debug/net8.0/staticwebassets.development.json
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/obj/Debug/net8.0/staticwebassets/msbuild.CountryApi.Microsoft.AspNetCore.StaticWebAssets.props
@@ -126,3 +128,5 @@
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/obj/Debug/net8.0/CountryApi.pdb
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/obj/Debug/net8.0/CountryApi.genruntimeconfig.cache
 /home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/obj/Debug/net8.0/ref/CountryApi.dll
+/home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/bin/Debug/net8.0/Newtonsoft.Json.dll
+/home/homero/Documents/Proyectos/C# proyecto pais/CountryApi/bin/Debug/net8.0/Bogus.dll

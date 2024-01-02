@@ -1,6 +1,8 @@
 # .gitignore for ASP.NET projects
-
+.obj/
 bin
+obj/
+obj/Debug/
 # User-specific files
 *.rsuser
 *.suo

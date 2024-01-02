@@ -1,8 +1,13 @@
+// Controllers/CountryController.cs
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CountryApi.Data;
 using CountryApi.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace CountryApi.Controllers
@@ -18,82 +23,59 @@ namespace CountryApi.Controllers
             _context = context;
         }
 
+        private static Expression<Func<Country, bool>> GetFilterExpression(string filter)
+        {
+            return c =>
+                EF.Functions.Like(c.Name, $"%{filter}%") ||
+                EF.Functions.Like(c.IsoCode, $"%{filter}%") ||
+                c.Hotels.Any(h => EF.Functions.Like(h.Name, $"%{filter}%")) ||
+                c.Restaurants.Any(r => EF.Functions.Like(r.Name, $"%{filter}%"));
+        }
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
+        public async Task<ActionResult<IEnumerable<Country>>> GetCountries(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int rowsPerPage = 10,
+            [FromQuery] string filter = "")
         {
-            return await _context.Countries.ToListAsync();
-        }
+            var query = _context.Countries.Include(c => c.Hotels).Include(c => c.Restaurants).AsQueryable();
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Country>> GetCountry(int id)
-        {
-            var country = await _context.Countries.FindAsync(id);
-
-            if (country == null)
+            if (!string.IsNullOrEmpty(filter))
             {
-                return NotFound();
+                query = query.Where(GetFilterExpression(filter));
             }
 
-            return country;
-        }
+            int totalRecords = await query.CountAsync();
 
-        [HttpPost]
-        public async Task<ActionResult<Country>> PostCountry(Country country)
-        {
-            _context.Countries.Add(country);
-            await _context.SaveChangesAsync();
+            var countries = await query.Skip((pageNumber - 1) * rowsPerPage)
+                                       .Take(rowsPerPage)
+                                       .ToListAsync();
 
-            return CreatedAtAction(nameof(GetCountry), new { id = country.Id }, country);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCountry(int id, Country country)
-        {
-            if (id != country.Id)
+            var countryResponses = countries.Select(c => new Country
             {
-                return BadRequest();
-            }
-
-            _context.Entry(country).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CountryExists(id))
+                Id = c.Id,
+                Name = c.Name,
+                IsoCode = c.IsoCode,
+                Population = c.Population,
+                Hotels = c.Hotels.Select(h => new Hotel
                 {
-                    return NotFound();
-                }
-                else
+                    Id = h.Id,
+                    Name = h.Name,
+                    Starts = h.Starts,
+                    CountryId = c.Id,
+                }).ToList(),
+                Restaurants = c.Restaurants.Select(r => new Restaurant
                 {
-                    throw;
-                }
-            }
+                    Id = r.Id,
+                    Name = r.Name,
+                    Type = r.Type,
+                    CountryId = c.Id,
+                }).ToList()
+            }).ToList();
 
-            return NoContent();
-        }
+            Response.Headers.Add("X-Total-Records", totalRecords.ToString());
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCountry(int id)
-        {
-            var country = await _context.Countries.FindAsync(id);
-
-            if (country == null)
-            {
-                return NotFound();
-            }
-
-            _context.Countries.Remove(country);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool CountryExists(int id)
-        {
-            return _context.Countries.Any(e => e.Id == id);
+            return countryResponses;
         }
     }
 }
